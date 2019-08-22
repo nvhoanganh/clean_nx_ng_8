@@ -1,0 +1,133 @@
+{
+  "version": 1,
+  "projects": {
+    "avatar": {
+      "projectType": "application",
+      "schematics": {
+        "@nrwl/angular:component": {
+          "style": "scss"
+        }
+      },
+      "root": "apps/avatar",
+      "sourceRoot": "apps/avatar/src",
+      "prefix": "avatar",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:browser",
+          "options": {
+            "outputPath": "dist/apps/avatar",
+            "index": "apps/avatar/src/index.html",
+            "main": "apps/avatar/src/main.ts",
+            "polyfills": "apps/avatar/src/polyfills.ts",
+            "tsConfig": "apps/avatar/tsconfig.app.json",
+            "aot": false,
+            "assets": ["apps/avatar/src/favicon.ico", "apps/avatar/src/assets"],
+            "styles": ["apps/avatar/src/styles.scss"],
+            "scripts": []
+          },
+          "configurations": {
+            "production": {
+              "fileReplacements": [
+                {
+                  "replace": "apps/avatar/src/environments/environment.ts",
+                  "with": "apps/avatar/src/environments/environment.prod.ts"
+                }
+              ],
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "extractCss": true,
+              "namedChunks": false,
+              "aot": true,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "buildOptimizer": true,
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "2mb",
+                  "maximumError": "5mb"
+                }
+              ]
+            }
+          }
+        },
+        "serve": {
+          "builder": "@angular-devkit/build-angular:dev-server",
+          "options": {
+            "browserTarget": "avatar:build"
+          },
+          "configurations": {
+            "production": {
+              "browserTarget": "avatar:build:production"
+            }
+          }
+        },
+        "extract-i18n": {
+          "builder": "@angular-devkit/build-angular:extract-i18n",
+          "options": {
+            "browserTarget": "avatar:build"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "apps/avatar/tsconfig.app.json",
+              "apps/avatar/tsconfig.spec.json"
+            ],
+            "exclude": ["**/node_modules/**", "!apps/avatar/**"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "options": {
+            "jestConfig": "apps/avatar/jest.config.js",
+            "tsConfig": "apps/avatar/tsconfig.spec.json",
+            "setupFile": "apps/avatar/src/test-setup.ts"
+          }
+        }
+      }
+    },
+    "avatar-e2e": {
+      "root": "apps/avatar-e2e",
+      "sourceRoot": "apps/avatar-e2e/src",
+      "projectType": "application",
+      "architect": {
+        "e2e": {
+          "builder": "@nrwl/cypress:cypress",
+          "options": {
+            "cypressConfig": "apps/avatar-e2e/cypress.json",
+            "tsConfig": "apps/avatar-e2e/tsconfig.e2e.json",
+            "devServerTarget": "avatar:serve"
+          },
+          "configurations": {
+            "production": {
+              "devServerTarget": "avatar:serve:production"
+            }
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": ["apps/avatar-e2e/tsconfig.e2e.json"],
+            "exclude": ["**/node_modules/**", "!apps/avatar-e2e/**"]
+          }
+        }
+      }
+    }
+  },
+  "cli": {
+    "defaultCollection": "@nrwl/angular"
+  },
+  "schematics": {
+    "@nrwl/angular:application": {
+      "unitTestRunner": "jest",
+      "e2eTestRunner": "cypress"
+    },
+    "@nrwl/angular:library": {
+      "unitTestRunner": "jest"
+    }
+  },
+  "defaultProject": "avatar"
+}
